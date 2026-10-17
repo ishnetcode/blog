@@ -1,43 +1,60 @@
-# Astro Starter Kit: Minimal
+# blog.ishrastogi.in
 
-```sh
-npm create astro@latest -- --template minimal
-```
+Source code for my personal blog at **[blog.ishrastogi.in](https://blog.ishrastogi.in)**,
+where I write about .NET, cloud, building production AI systems, and life outside code.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+I built it from an empty folder. The full step-by-step write-up is here:
+[From Markdown file to live web page: building my blog with Astro](https://blog.ishrastogi.in/blog/markdown-to-web-page-with-astro/).
 
-## 🚀 Project Structure
+## How it works
 
-Inside of your Astro project, you'll see the following folders and files:
+- **[Astro](https://astro.build)** generates a static site at build time.
+- **Posts are Markdown files** in `src/content/blog/`, validated against a typed schema.
+- **Dynamic routing** (`src/pages/blog/[slug].astro`) creates one page per post.
+- **RSS feed and sitemap** are generated automatically.
+- **Light and dark mode** use CSS variables, with no JavaScript.
+- **Azure Static Web Apps** (Free plan) hosts the site.
+- **GitHub Actions** deploys every push to `main`.
+
+## Project structure
 
 ```text
 /
-├── public/
+├── public/                   # static files (favicon, images)
 ├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── content/blog/         # blog posts (Markdown)
+│   ├── layouts/              # shared page layout
+│   ├── pages/                # routes: home, about, posts, RSS
+│   ├── styles/               # global CSS
+│   └── content.config.ts     # post schema
+└── astro.config.mjs
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Run locally
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Requires Node.js 22.22 or later.
 
-Any static assets, like images, can be placed in the `public/` directory.
+```bash
+npm install
+npm run dev
+```
 
-## 🧞 Commands
+Then open http://localhost:4321.
 
-All commands are run from the root of the project, from a terminal:
+## Writing a post
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Add a Markdown file to `src/content/blog/`:
 
-## 👀 Want to learn more?
+```markdown
+---
+title: "My post title"
+description: "A one-sentence summary."
+pubDate: 2026-10-17
+draft: false
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Post content here.
+```
+
+The filename becomes the URL, e.g. `my-post.md` → `/blog/my-post`.
+Set `draft: true` to keep a post off the site while you work on it.
