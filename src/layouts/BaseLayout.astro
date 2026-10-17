@@ -1,12 +1,16 @@
 ---
-const { title } = Astro.props;
+import '../styles/global.css';
+const { title, description = 'Notes on .NET, cloud and building production AI systems.' } = Astro.props;
 ---
 
 <html lang="en-GB">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="alternate" type="application/rss+xml" title="Ish Rastogi" href="/rss.xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
   <body>
     <header>
@@ -14,6 +18,7 @@ const { title } = Astro.props;
         <nav>
             <a href="/">Home</a>
             <a href="/about">About</a>
+            <a href="/rss.xml">RSS</a>
         </nav>
     </header>
 
@@ -22,7 +27,7 @@ const { title } = Astro.props;
     </main>
 
     <footer>
-      <p>© 2026, Ish Rastogi, <a href="https://github.com/ishnetcode">GitHub</a> and <a href="https://github.com/ishnetcode">LinkedIn</a></p>
+      <p>© {new Date().getFullYear()}, Ish Rastogi, <a href="https://github.com/ishnetcode">GitHub</a> and <a href="https://github.com/ishnetcode">LinkedIn</a></p>
     </footer>
   </body>
 </html>
