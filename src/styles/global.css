@@ -37,9 +37,13 @@ a {
   color: var(--accent);
 }
 
-header { 
-    display: flex; 
-    justify-content: space-between; 
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 1.5rem 0;
+  width: calc(100% - 32px);
+  border-bottom: 1px solid var(--border);
 }
 
 header a,
