@@ -1,0 +1,28 @@
+---
+const { title } = Astro.props;
+---
+
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+        <a href="/">Ish Rastogi</a>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+        </nav>
+    </header>
+
+    <main>
+      <slot />  <!-- page content goes here, like @RenderBody() -->
+    </main>
+
+    <footer>
+      <p>© 2026, Ish Rastogi, <a href="https://github.com/ishnetcode">GitHub</a> and <a href="https://github.com/ishnetcode">LinkedIn</a></p>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,41 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+// Runs once at build time. It tells Astro which pages to generate:
+// one per post, each with a URL slug and the post data passed in as props.
+export async function getStaticPaths() {
+  const posts = await getCollection('blog', ({ data }) => !data.draft);
+
+  return posts.map((post) => ({
+    params: { slug: post.id },   // hello-world.md -> /blog/hello-world
+    props: { post },             // handed to the page below
+  }));
+}
+
+// The post for the page currently being built.
+const { post } = Astro.props;
+
+// Turns the Markdown body into a component you can render.
+const { Content } = await render(post);
+
+const published = post.data.pubDate.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+
+<BaseLayout title={post.data.title}>
+  <article>
+    <h1>{post.data.title}</h1>
+    <p>
+      <time datetime={post.data.pubDate.toISOString()}>{published}</time>
+    </p>
+    <p>{post.data.description}</p>
+
+    <Content />
+  </article>
+
+  <p><a href="/">← Back to home</a></p>
+</BaseLayout>
