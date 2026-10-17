@@ -27,13 +27,8 @@ For a blog, that's ideal: the content only changes when I publish something new.
 Here's the whole journey of a post, from Markdown file to live page:
 
 ```mermaid
-flowchart TD
-  A["I write hello-world.md"] --> B["git push"]
-  B --> C["GitHub Actions runs astro build"]
-  C --> D["Content collection validates the frontmatter"]
-  D --> E["[slug].astro creates one page per post"]
-  E --> F["Plain HTML files in dist/"]
-  F --> G["Azure Static Web Apps serves the site"]
+flowchart LR
+  A["Write .md"] --> B["git push"] --> C["Schema check"] --> D["[slug].astro"] --> E["HTML files"] --> F["Azure"]
 ```
 
 The rest of this post builds each piece of that pipeline.
@@ -352,9 +347,8 @@ The diagram near the top of this post isn't an image. It's a few lines of text i
 
 ````markdown
 ```mermaid
-flowchart TD
-  A["I write hello-world.md"] --> B["git push"]
-  B --> C["GitHub Actions runs astro build"]
+flowchart LR
+  A["Write .md"] --> B["git push"] --> C["Schema check"]
 ```
 ````
 
