@@ -85,6 +85,11 @@ nav a {
   font-weight: bold;
 }
 
+.topics li,
+main ul:not(.posts) li {
+  margin-bottom: 0.5rem;
+}
+
 footer {
   font-size: 0.8rem;
   color: var(--muted);

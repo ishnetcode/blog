@@ -8,8 +8,21 @@ const posts = (await getCollection('blog', (post) => !post.data.draft))
 ---
 
 <BaseLayout title="Ish Rastogi">
-  <h1>Hello, I'm Ish</h1>
-  <p>Notes on .NET, cloud and building production AI systems.</p>
+	<h1>Hello, I'm Ish</h1>
+	<p>
+		I'm a software engineer who builds .NET systems and AI agents by day, and
+		cooks and wanders at the weekend. This is my corner of the internet for
+		writing about both.
+	</p>
+
+	<p>Expect posts on:</p>
+	<ul class="topics">
+		<li><strong>AI and .NET</strong>: building agents and making them work in production</li>
+		<li><strong>Cloud and architecture</strong>: lessons from real systems at scale</li>
+		<li><strong>Life outside code</strong>: food, places and whatever I'm curious about</li>
+	</ul>
+
+	<p><a href="/about">More about me →</a></p>
 
   <h2>Posts</h2>
 
