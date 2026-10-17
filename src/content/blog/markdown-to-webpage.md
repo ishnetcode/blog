@@ -16,11 +16,27 @@ By the end you'll have:
 - A shared layout, dark mode, RSS and a sitemap
 - The whole thing deployed for free on Azure Static Web Apps
 
+The complete source code is on GitHub at [github.com/ishnetcode/blog](https://github.com/ishnetcode/blog), so you can follow along or compare your code with mine at any step.
+
 ## What is Astro, and why use it for a blog?
 
 Astro is a **static site generator**. Instead of rendering HTML on every request like Razor Pages does, it renders everything **once, at build time**, and outputs plain `.html` files. Hosting those files is free and fast, because there's no server code running.
 
 For a blog, that's ideal: the content only changes when I publish something new.
+
+Here's the whole journey of a post, from Markdown file to live page:
+
+```mermaid
+flowchart TD
+  A["I write hello-world.md"] --> B["git push"]
+  B --> C["GitHub Actions runs astro build"]
+  C --> D["Content collection validates the frontmatter"]
+  D --> E["[slug].astro creates one page per post"]
+  E --> F["Plain HTML files in dist/"]
+  F --> G["Azure Static Web Apps serves the site"]
+```
+
+The rest of this post builds each piece of that pipeline.
 
 ## Step 1: Create the project
 
@@ -330,6 +346,65 @@ For the custom domain, I added a **CNAME** record for `blog` at my domain regist
 
 *Docs: [Deploy your Astro site to Microsoft Azure](https://docs.astro.build/en/guides/deploy/microsoft-azure/)*
 
+## Bonus: diagrams as code with Mermaid
+
+The diagram near the top of this post isn't an image. It's a few lines of text in my Markdown file:
+
+````markdown
+```mermaid
+flowchart TD
+  A["I write hello-world.md"] --> B["git push"]
+  B --> C["GitHub Actions runs astro build"]
+```
+````
+
+Astro doesn't draw [Mermaid](https://mermaid.js.org/) diagrams on its own, but it only takes two small changes.
+
+First, tell Astro's syntax highlighter to leave Mermaid blocks alone, in `astro.config.mjs`:
+
+```js
+export default defineConfig({
+  markdown: {
+    syntaxHighlight: {
+      type: 'shiki',
+      excludeLangs: ['mermaid'],
+    },
+  },
+});
+```
+
+Then install Mermaid with `npm install mermaid`, and add a script to the bottom of `[slug].astro` that turns those blocks into diagrams in the browser:
+
+```astro
+<script>
+  async function renderDiagrams() {
+    const blocks = document.querySelectorAll('pre > code.language-mermaid');
+    if (blocks.length === 0) return;
+
+    const { default: mermaid } = await import('mermaid');
+
+    blocks.forEach((code) => {
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.textContent = code.textContent;
+      code.parentElement.replaceWith(diagram);
+    });
+
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+    await mermaid.run();
+  }
+
+  renderDiagrams();
+</script>
+```
+
+The `import('mermaid')` inside the function is a **dynamic import**, so Mermaid's JavaScript only downloads on posts that actually contain a diagram. Every other page stays free of JavaScript.
+
+My first attempt used the `rehype-mermaid` plugin, which failed with `Cannot find package 'playwright'`. It needs a headless browser to work, which is more than a blog needs. Astro's built-in `excludeLangs` option plus this script turned out to be simpler.
+
+*Docs: [Syntax highlighting](https://docs.astro.build/en/guides/syntax-highlighting/) · [Mermaid](https://mermaid.js.org/)*
+
 ## What I'd tell myself before starting
 
 - **Start with the minimal template.** You'll understand every file in your project.
@@ -339,7 +414,7 @@ For the custom domain, I added a **CNAME** record for `blog` at my domain regist
 
 The whole build took me an evening and a morning, and publishing a post is now just writing a Markdown file and running `git push`.
 
-You're reading the result. The source code is on [GitHub](https://github.com/ishnetcode/blog).
+You're reading the result. Browse the full source code at [github.com/ishnetcode/blog](https://github.com/ishnetcode/blog).
 
 ## Further reading
 
@@ -355,3 +430,4 @@ All from the official Astro documentation:
 - [Add an RSS feed](https://docs.astro.build/en/guides/rss/)
 - [@astrojs/sitemap](https://docs.astro.build/en/guides/integrations-guide/sitemap/)
 - [Deploy to Microsoft Azure](https://docs.astro.build/en/guides/deploy/microsoft-azure/)
+- [Syntax highlighting](https://docs.astro.build/en/guides/syntax-highlighting/): including `excludeLangs` for diagram tools

@@ -39,3 +39,25 @@ const published = post.data.pubDate.toLocaleDateString('en-GB', {
 
   <p><a href="/">← Back to home</a></p>
 </BaseLayout>
+
+<script>
+  async function renderDiagrams() {
+    const blocks = document.querySelectorAll('pre > code.language-mermaid');
+    if (blocks.length === 0) return;   // no diagrams: don't load Mermaid at all
+
+    const { default: mermaid } = await import('mermaid');
+
+    blocks.forEach((code) => {
+      const diagram = document.createElement('div');
+      diagram.className = 'mermaid';
+      diagram.textContent = code.textContent;
+      code.parentElement.replaceWith(diagram);
+    });
+
+    const dark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    mermaid.initialize({ startOnLoad: false, theme: dark ? 'dark' : 'default' });
+    await mermaid.run();
+  }
+
+  renderDiagrams();
+</script>

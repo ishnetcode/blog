@@ -6,3 +6,8 @@ draft: true
 ---
 
 This is my first post. More soon.
+
+```mermaid
+flowchart LR
+  A[Markdown file] --> B[Astro build] --> C[HTML page] --> D[Azure]
+```
