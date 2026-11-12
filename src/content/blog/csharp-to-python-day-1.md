@@ -2,7 +2,7 @@
 title: "From C# Tech Lead to Forward Deployed Engineer: Day 1"
 description: "18 years of C#/.NET, an 8-week plan to become an FDE, and the first surprise: Python type hints don't stop anything."
 pubDate: 2026-11-12
-draft: true
+draft: false
 ---
 
 ## Why I'm doing this
