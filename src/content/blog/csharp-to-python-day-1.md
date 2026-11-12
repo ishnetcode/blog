@@ -24,13 +24,13 @@ The plan is 8 weeks: Python and LLM APIs, then RAG, agents, MCP and evals, then 
 
 My first question was why everyone uses `uv` instead of just installing Python. The answer made sense once I mapped it to .NET. The `dotnet` CLI handles the SDK, packages, isolation and running code. Python historically spread those jobs across several tools. `uv` brings them back together:
 
-| Job | .NET | uv |
-| --- | --- | --- |
-| Pin the language version | `global.json` | `.python-version` |
-| Project definition | `.csproj` | `pyproject.toml` |
-| Locked dependencies | `packages.lock.json` | `uv.lock` |
-| Per-project packages | automatic | `.venv/` (automatic) |
-| Run | `dotnet run` | `uv run` |
+| Job | .NET | Old Python way | uv |
+| --- | --- | --- | --- |
+| Install the language version | SDK installer | python.org or pyenv | `uv python install` |
+| Isolate packages per project | automatic (per `.csproj`) | `venv`, set up by hand | automatic (`.venv/`) |
+| Install packages | NuGet | `pip` | `uv add` |
+| Lock versions | `packages.lock.json` | pip-tools or Poetry | `uv.lock` |
+| Run | `dotnet run` | activate venv, then `python` | `uv run` |
 
 The key concept is isolation. By default Python installs packages machine-wide, and a **virtual environment** (`.venv`) is the fix. uv creates and manages it for you, which gives the per-project behaviour I'm used to from NuGet.
 
@@ -68,6 +68,25 @@ error: Failed to spawn: main.py
 ```
 
 My version of uv had created a package-style project (a `src/` folder) with no `main.py`. When uv can't find the file, it tries to launch `main.py` as a program instead. Creating the file fixed it.
+
+### What's in the project folder
+
+`uv init` generated several files. Here's what each one does, mapped to .NET:
+
+| File / folder | What it is | .NET equivalent |
+| --- | --- | --- |
+| `pyproject.toml` | Project definition: name, version, Python version, dependencies. `uv add` writes to it. | `.csproj` |
+| `uv.lock` | Exact pinned versions of every package, including indirect ones. Never edit by hand; commit it. | `packages.lock.json` |
+| `.python-version` | The Python version this project uses. | `global.json` |
+| `.venv/` | The project's private Python and installed packages. Not committed; `uv run` rebuilds it. | `bin/` + `obj/` + NuGet cache |
+| `.gitignore` | What git shouldn't track. Already excludes `.venv/` and `__pycache__/`. | Same thing |
+| `README.md` | The project's front page on GitHub. | Same thing |
+| `main.py` | The script I'm working in. | `Program.cs` |
+| `src/` | Where reusable package code goes. | A class library project |
+
+Later you'll also see `__pycache__/`. It holds compiled bytecode that Python caches so it starts faster, and it's safe to delete.
+
+My project ended up with both a `src/` folder (package style) and a `main.py` at the root (script style). That's fine for practice, but a portfolio repo should settle on one layout: code in `src/`, tests in `tests/`.
 
 ### Translating a C# record
 
