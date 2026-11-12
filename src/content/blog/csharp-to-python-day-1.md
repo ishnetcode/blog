@@ -2,14 +2,14 @@
 title: "From C# Tech Lead to Forward Deployed Engineer: Day 1"
 description: "18 years of C#/.NET, an 8-week plan to become an FDE, and the first surprise: Python type hints don't stop anything."
 pubDate: 2026-11-12
-draft: false
+draft: true
 ---
 
 ## Why I'm doing this
 
-I've spent 18 years writing software, almost all of it in C# and .NET. For the last 12, I've been a Technical Lead embedded with a FTSE 100 insurer, designing microservices, migrating platforms to AWS EKS, and shipping systems that handle millions of requests a day.
+I've spent 18 years writing software, almost all of it in C# and .NET. For the last 12, I've been a Technical Lead embedded with a FTSE 100 insurer through Tata Consultancy Services, designing microservices, migrating platforms to AWS EKS, and shipping systems that handle millions of requests a day.
 
-Lately I've been drawn to a role that has exploded across AI companies: the **Forward Deployed Engineer (FDE)**. An FDE sits with a customer, scopes a messy real-world problem, and ships production code inside their environment, often wiring LLMs, retrieval and agents into legacy systems.
+Lately I've been drawn to a role that has exploded across London's AI companies: the **Forward Deployed Engineer (FDE)**. An FDE sits with a customer, scopes a messy real-world problem, and ships production code inside their environment, often wiring LLMs, retrieval and agents into legacy systems.
 
 When I looked closely, I realised I've been doing the "forward deployed" part for over a decade. What I haven't done is prove I can ship AI systems in the stack these teams use. So I wrote an honest gap analysis:
 
@@ -33,6 +33,26 @@ My first question was why everyone uses `uv` instead of just installing Python. 
 | Run | `dotnet run` | `uv run` |
 
 The key concept is isolation. By default Python installs packages machine-wide, and a **virtual environment** (`.venv`) is the fix. uv creates and manages it for you, which gives the per-project behaviour I'm used to from NuGet.
+
+First, install uv. On Windows (PowerShell):
+
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+On macOS or Linux:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then open a new terminal so the `uv` command is on your PATH, and check it worked:
+
+```bash
+uv --version
+```
+
+You don't need to install Python separately. The first time you run a project, uv downloads a suitable Python version for you (I got CPython 3.15.2). Next, create a project and run it:
 
 ```bash
 uv init fde-practice
