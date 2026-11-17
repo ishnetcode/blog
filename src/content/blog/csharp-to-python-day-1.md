@@ -7,7 +7,7 @@ draft: false
 
 ## Why I'm doing this
 
-I've spent 18 years writing software, almost all of it in C# and .NET. For the last 12, I've been a Technical Lead embedded with a FTSE 100 insurer through Tata Consultancy Services, designing microservices, migrating platforms to AWS EKS, and shipping systems that handle millions of requests a day.
+I've spent 18 years writing software, almost all of it in C# and .NET. For the last 12, I've been a Technical Lead embedded with a FTSE 100 insurer, designing microservices, migrating platforms to AWS EKS, and shipping systems that handle millions of requests a day.
 
 Lately I've been drawn to a role that has exploded across London's AI companies: the **Forward Deployed Engineer (FDE)**. An FDE sits with a customer, scopes a messy real-world problem, and ships production code inside their environment, often wiring LLMs, retrieval and agents into legacy systems.
 
